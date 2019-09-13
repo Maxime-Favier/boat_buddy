@@ -11,17 +11,17 @@ from map import *
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.title = ""
+        self.title = "Boat buddy"
         self.init_ui()
 
     def init_ui(self):
+        self.setWindowIcon(QIcon("./icons/sailboat.png"))
         self.setWindowTitle(self.title)
-        self.toolbar()
+        self.draw_toolbar()
         self.draw_map()
-        #self.setGeometry(300, 300, 300, 200)
         self.show()
 
-    def toolbar(self):
+    def draw_toolbar(self):
         exitAct = QAction(self.style().standardIcon(QStyle.SP_DialogCloseButton), 'Exit', self)
         exitAct.setShortcut('Ctrl+Q')
         exitAct.triggered.connect(qApp.quit)

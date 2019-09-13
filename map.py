@@ -1,7 +1,6 @@
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QSlider, QLabel, QGroupBox, QGridLayout, QVBoxLayout, \
-    QSizePolicy
-from PyQt5.QtGui import QIcon, QPainter, QBrush, QColor, QPen, QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap
 from PIL import Image
 
 class DrawMap(QWidget):
