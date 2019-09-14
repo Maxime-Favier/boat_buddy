@@ -13,7 +13,8 @@ def angleToFunction(angle, point):
        @return: a et b de l'équation f(x)=ax+b
 
        @author: Maxime Favier
-       @version: 0.2
+       @since: 0.2
+       @version: 0.3
        """
     # test du cas 0/360° et 180°
     if angle == 0 or angle == 360:
@@ -23,11 +24,8 @@ def angleToFunction(angle, point):
     startPoint_X, startPoint_Y = point
     # calcul de la pente
     a = tan(radians(angle))
-    print(a)
+    # print(a)
     # calcul du coef de la droite affine
     b = startPoint_Y - (a * startPoint_X)
-    print(b)
+    # print(b)
     return a, b
-
-
-angleToFunction(45, (1, 1))
