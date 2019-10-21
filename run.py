@@ -12,6 +12,7 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.title = "Boat buddy"
+        self.centralWidg = DrawMap("./maps/baie_de_quiberon.png")
         self.init_ui()
 
     def init_ui(self):
@@ -22,14 +23,28 @@ class Window(QMainWindow):
         self.show()
 
     def draw_toolbar(self):
+        # boutton quitter
         exitAct = QAction(self.style().standardIcon(QStyle.SP_DialogCloseButton), 'Exit', self)
         exitAct.setShortcut('Ctrl+Q')
         exitAct.triggered.connect(qApp.quit)
+
+        positionTool = QAction(QIcon("./icons/star.png"), "Position Tool", self)
+        positionTool.setToolTip('Calcule la position')
+        delPositionTool = QAction(QIcon("./icons/delStar.png"), "Position Tool", self)
+        delPositionTool.setToolTip('Supprime le tracé des amer')
+        #delPositionTool.triggered.connect()
+
+        mareeTool = QAction(QIcon("./icons/maree.png"), "Maree Option", self)
+        mareeTool.setToolTip("Calcul de la marée")
+
         self.toolbar = self.addToolBar('Exit')
+        self.toolbar.addAction(positionTool)
+        self.toolbar.addAction(delPositionTool)
+        self.toolbar.addAction(mareeTool)
         self.toolbar.addAction(exitAct)
 
     def draw_map(self):
-        self.setCentralWidget(DrawMap("./maps/baie_de_quiberon.png"))
+        self.setCentralWidget(self.centralWidg)
 
 
 if __name__ == '__main__':

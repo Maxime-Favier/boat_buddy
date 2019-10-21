@@ -16,16 +16,9 @@ def angleToFunction(angle, point):
        @since: 0.2
        @version: 0.3
        """
-    # test du cas 0/360° et 180°
-    if angle == 0 or angle == 360:
-        pass
-    # correction du repère
-    angle = 90 - angle
-    startPoint_X, startPoint_Y = point
-    # calcul de la pente
-    a = tan(radians(angle))
-    # print(a)
-    # calcul du coef de la droite affine
-    b = startPoint_Y - (a * startPoint_X)
-    # print(b)
+    a = -tan(radians(90 - angle))
+    #print("a", a)
+    b = point[1] - (a * point[0])
     return a, b
+
+print(angleToFunction(0, (0, 0)))
