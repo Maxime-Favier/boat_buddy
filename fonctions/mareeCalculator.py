@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from datetime import *
 from math import *
 
@@ -58,6 +61,3 @@ def marreCalculator(TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time
     #print("heuteur d'eau final", out)
     return out
 
-
-
-marreCalculator(724, 7.3, 1072, 1.6, 970)

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from math import *
 
 
@@ -7,7 +10,7 @@ def angleToFunction(angle, point):
        ! le cas ou a = +-inf
 
        @type  angle: float
-       @param angle: angle par rapport au nord. (0° - 360°)
+       @param angle: angle par rapport au nord. (0 - 360)
        @type  point: tuple
        @param point: point de la droite
        @rtype: tuple
@@ -18,8 +21,6 @@ def angleToFunction(angle, point):
        @version: 0.5
        """
     a = tan(radians(90 - angle))
-    #print("a", a)
+    # print("a", a)
     b = point[1] - (-a * point[0])
     return a, b
-
-print(angleToFunction(0, (0, 0)))

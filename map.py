@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QInputDialog, QMessageBox
 from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap

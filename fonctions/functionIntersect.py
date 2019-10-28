@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 def functionIntersect(a, b, c, d):
     """
           Renvoie le point d'intersection de deux fonctions
@@ -26,5 +29,3 @@ def functionIntersect(a, b, c, d):
     y = a * x + b
     return x, y
 
-
-print(functionIntersect(1, 1, 2, 0))
