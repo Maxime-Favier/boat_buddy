@@ -4,6 +4,7 @@ from math import *
 def angleToFunction(angle, point):
     """
        Renvoie l'équation d'une droite à partir d'un point et d'un angle
+       ! le cas ou a = +-inf
 
        @type  angle: float
        @param angle: angle par rapport au nord. (0° - 360°)
@@ -14,11 +15,11 @@ def angleToFunction(angle, point):
 
        @author: Maxime Favier
        @since: 0.2
-       @version: 0.3
+       @version: 0.5
        """
-    a = -tan(radians(90 - angle))
+    a = tan(radians(90 - angle))
     #print("a", a)
-    b = point[1] - (a * point[0])
+    b = point[1] - (-a * point[0])
     return a, b
 
 print(angleToFunction(0, (0, 0)))

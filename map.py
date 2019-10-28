@@ -83,10 +83,10 @@ class DrawMap(QWidget):
                     #print("ab", a, b)
                     # test des cas pour la direction
                     if deg < 180:
-                        y2 = a * 1650 + b
+                        y2 = -a * 1650 + b
                         x2 = 1650
                     else:
-                        y2 = -a * 1650 + b
+                        y2 = a * 1650 + b
                         x2 = -1650
                     # evite l'overflow du GUI
                     if y2 > 2147483647:
@@ -94,7 +94,7 @@ class DrawMap(QWidget):
                     elif y2 < -2147483648:
                         y2 = -2147483648
 
-                    self.fx.append((a, b))
+                    self.fx.append((-a, b))
                     self.line.append((pos.x(), pos.y(), x2, y2))
 
                 # si 2 doites => calcul de l'intersection

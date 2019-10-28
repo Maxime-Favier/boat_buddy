@@ -32,7 +32,7 @@ class Window(QMainWindow):
         positionTool.setToolTip('Calcule la position')
         delPositionTool = QAction(QIcon("./icons/delStar.png"), "Position Tool", self)
         delPositionTool.setToolTip('Supprime le tracé des amer')
-        #delPositionTool.triggered.connect()
+        delPositionTool.triggered.connect(self.centralWidg.supprimerTraces)
 
         mareeTool = QAction(QIcon("./icons/maree.png"), "Maree Option", self)
         mareeTool.setToolTip("Calcul de la marée")
