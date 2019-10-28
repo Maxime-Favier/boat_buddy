@@ -16,6 +16,7 @@ class Window(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
+        """definitions des proprietés du GUI"""
         self.setWindowIcon(QIcon("./icons/sailboat.png"))
         self.setWindowTitle(self.title)
         self.draw_toolbar()
@@ -23,7 +24,7 @@ class Window(QMainWindow):
         self.show()
 
     def draw_toolbar(self):
-        # boutton quitter
+        """Creation des bouttons de la barre de tache"""
         exitAct = QAction(self.style().standardIcon(QStyle.SP_DialogCloseButton), 'Exit', self)
         exitAct.setShortcut('Ctrl+Q')
         exitAct.triggered.connect(qApp.quit)
@@ -44,6 +45,7 @@ class Window(QMainWindow):
         self.toolbar.addAction(exitAct)
 
     def draw_map(self):
+        """positionement de la carte"""
         self.setCentralWidget(self.centralWidg)
 
 

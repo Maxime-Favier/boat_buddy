@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QInputDialog, QMessageBox
-from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap
+from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap, QMouseEvent, QPaintEvent
 from PIL import Image
 from math import *
 
@@ -18,23 +18,24 @@ class DrawMap(QWidget):
         self.fx = []
         self.intersect = ()
         self.im = im
+        self.mode = "amer"
         image = Image.open(im)
         self.imSize = image.size
         self.setMinimumWidth(image.size[0])
         self.setMinimumHeight(image.size[1])
-        self.init_ui()
-
-    def init_ui(self):
-        pass
-        # lbl = QLabel(self)
-        # lbl.setPixmap(pixmap)
+        # self.init_ui()
 
     def supprimerTraces(self):
+        """supprime le tracé des amers"""
         self.line = []
         self.fx = []
         self.update()
 
     def paintEvent(self, event):
+        """
+        impressions des formes sur la carte
+            @type event: QPaintEvent
+        """
         painter = QPainter(self)
         pixmap = QPixmap(self.im)
         painter.drawPixmap(self.rect(), pixmap)
@@ -52,9 +53,13 @@ class DrawMap(QWidget):
             painter.drawEllipse(self.intersect[0] - 5, self.intersect[1] - 5, 10, 10)
         return
 
-    def mousePressEvent(self, event):
+    def amerCreation(self, event):
+        """
+        Creation du trace des amers et determination de la position
+            @type event: QMouseEvent
+            @param event: objet clic de souris
+        """
         pos = event.pos()
-        #print(pos.x(), pos.y())
         # fenetre demande angle de l'amer
         deg, ok = QInputDialog.getDouble(self, "Angle de l'amer", "Angle de l'amer")
         # si click ok
@@ -83,7 +88,7 @@ class DrawMap(QWidget):
                 else:
                     # calcul de la fonction de la droite
                     a, b = angleToFunction(deg, (pos.x(), pos.y()))
-                    #print("ab", a, b)
+                    # print("ab", a, b)
                     # test des cas pour la direction
                     if deg < 180:
                         y2 = -a * 1650 + b
@@ -109,9 +114,8 @@ class DrawMap(QWidget):
                         QMessageBox.critical(self, "Amer invalide", "deux amer différents sont requis")
                         self.supprimerTraces()
                         return
-                    #print("intersect", pt)
+                    # print("intersect", pt)
                     self.intersect = pt
-
 
             # sinon angle invalide
             else:
@@ -119,3 +123,12 @@ class DrawMap(QWidget):
                 QMessageBox.critical(self, "Angle invalide", "l'angle doit être entre 0 et 360°")
 
         self.update()
+
+    def mousePressEvent(self, event):
+        """
+        Hook evenement clic de souris
+            @type event: QMouseEvent
+            @param event: objet clic de souris
+        """
+        if self.mode == "amer":
+            self.amerCreation(event)
