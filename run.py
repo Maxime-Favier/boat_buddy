@@ -34,6 +34,8 @@ class Window(QMainWindow):
         delPositionTool = QAction(QIcon("./icons/delStar.png"), "Position Tool", self)
         delPositionTool.setToolTip('Supprime le tracé des amer')
         delPositionTool.triggered.connect(self.centralWidg.supprimerTraces)
+        gpsTool = QAction(QIcon("./icons/satellite.png"), "GPS", self)
+        gpsTool.setToolTip("Entrer une position GPS")
 
         mareeTool = QAction(QIcon("./icons/maree.png"), "Maree Option", self)
         mareeTool.setToolTip("Calcul de la marée")
@@ -41,6 +43,7 @@ class Window(QMainWindow):
         self.toolbar = self.addToolBar('Exit')
         self.toolbar.addAction(positionTool)
         self.toolbar.addAction(delPositionTool)
+        self.toolbar.addAction(gpsTool)
         self.toolbar.addAction(mareeTool)
         self.toolbar.addAction(exitAct)
 

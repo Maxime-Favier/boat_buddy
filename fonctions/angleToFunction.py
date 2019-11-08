@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from math import *
+from math import tan, radians
 
 
 def angleToFunction(angle, point):

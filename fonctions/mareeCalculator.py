@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import *
-from math import *
+from math import floor
 
 def marreCalculator(TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time):
     """

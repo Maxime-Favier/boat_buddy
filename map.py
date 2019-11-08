@@ -5,7 +5,6 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QInputDialog, QMessageBox
 from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap, QMouseEvent, QPaintEvent
 from PIL import Image
-from math import *
 
 from fonctions.angleToFunction import angleToFunction
 from fonctions.functionIntersect import functionIntersect
