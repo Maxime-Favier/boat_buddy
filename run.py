@@ -11,6 +11,10 @@ from map import *
 
 
 class Window(QMainWindow):
+    """
+    Classe principale du GUI
+    @author: Maxime Favier
+    """
     def __init__(self):
         super().__init__()
         self.title = "Boat buddy"
@@ -44,6 +48,7 @@ class Window(QMainWindow):
 
         mareeTool = QAction(QIcon("./icons/maree.png"), "Maree Option", self)
         mareeTool.setToolTip("Calcul de la marée")
+        mareeTool.triggered.connect(self.centralWidg.mareeDialogManager)
 
         self.toolbar = self.addToolBar('Exit')
         self.toolbar.addAction(positionTool)
@@ -66,8 +71,7 @@ class Window(QMainWindow):
         self.dockedWidget.layout().addWidget(self.groupePosition())
         self.dockedWidget.layout().addWidget(self.groupeGPS())
         self.dockedWidget.layout().addWidget(self.groupeAmersError())
-        # for i in range(5):
-        #    self.dockedWidget.layout().addWidget(QPushButton("{}".format(i)))
+        self.dockedWidget.layout().addWidget(self.groupeMaree())
 
     def groupePosition(self):
         """Initialisation des widgets du groupe position du bateau - Amers """
@@ -105,6 +109,18 @@ class Window(QMainWindow):
         groupe.setLayout(vbox)
         return groupe
 
+    def groupeMaree(self):
+        """Initialisation des widgets du groupe Marée"""
+        groupe = QGroupBox("Marée")
+        self.lblMaree1 = QLabel("→")
+        self.lblMaree2 = QLabel("→")
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.lblMaree1)
+        vbox.addWidget(self.lblMaree2)
+        vbox.addStretch(0)
+        groupe.setLayout(vbox)
+        return groupe
+
     def updateLabelsAmer(self, pos1, pos2):
         """
         mise à jour des labels du groupe position amer
@@ -137,6 +153,19 @@ class Window(QMainWindow):
         """
         self.lblError1.setText(pos1)
         self.lblError2.setText(pos2)
+
+    def updateMarre(self, lbl1=None, lbl2=None):
+        """
+        mise à jour des labels du groupe marée
+        @type lbl1: str
+        @param lbl1: contenu du lbl1
+        @type lbl2: str
+        @param lbl2: contenu du lbl2
+        """
+        if lbl1:
+            self.lblMaree1.setText(lbl1)
+        if lbl2:
+            self.lblMaree2.setText(lbl2)
 
 
 if __name__ == '__main__':

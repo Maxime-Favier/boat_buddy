@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from datetime import *
 from math import floor
+
 
 def marreCalculator(TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time):
     """
@@ -28,36 +28,35 @@ def marreCalculator(TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time
     # TODO gestion entre 2 jours + conversion minutes
     # calcul de la durée de la marée
     durreMaree = abs(TMarreeBasse - TMarreeHaute)
-    #print("durre marre", durreMaree)
+    # print("durre marre", durreMaree)
     # calcul de l'heure marée
     heureMaree = durreMaree / 6
-    #print("heureMaree", heureMaree)
+    # print("heureMaree", heureMaree)
     # calcul du marnage et du 12éme
     marnage = HMarreeHaute - HMarreeBasse
-    #print("marnage", marnage)
+    # print("marnage", marnage)
     douzieme = marnage / 12
-    #print("douzième", douzieme)
+    # print("douzième", douzieme)
     # durée ecoulée entre la basse mer et le tmps demandé
     duree = abs(time - TMarreeBasse)
-    #print("duree", duree)
+    # print("duree", duree)
     # convertissons en heure-marée
     convertHM = duree / heureMaree
-    #print("convertHM", convertHM)
+    # print("convertHM", convertHM)
     # calcul des douzièmes
     dz = [douzieme, douzieme * 2, douzieme * 3, douzieme * 3, douzieme * 2, douzieme]
     arrHt = floor(convertHM)
     reste = convertHM - arrHt
     # produit en croix
-    #print("reste", reste, 'arrHt', arrHt)
+    # print("reste", reste, 'arrHt', arrHt)
     x = reste * dz[arrHt]
-    #print("prd x", x)
+    # print("prd x", x)
     # calcul de l'augmentation de la hauteur de l'eau
     deltaH = x
     for i in range(arrHt):
         deltaH += dz[i]
-    #print("deltaH", deltaH)
+    # print("deltaH", deltaH)
     # hauteur d'eau final
     out = deltaH + HMarreeBasse
-    #print("heuteur d'eau final", out)
+    # print("heuteur d'eau final", out)
     return out
-

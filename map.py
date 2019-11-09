@@ -10,11 +10,23 @@ from fonctions.angleToFunction import angleToFunction
 from fonctions.functionIntersect import functionIntersect
 from fonctions.WGS84DecToDeg import WGS84DecToDeg
 from fonctions.WGS84DegToDec import WGS84DegToDec
+from fonctions.mareeCalculator import marreCalculator
 from uiFunctions import *
 
 
 class DrawMap(QWidget):
+    """
+    widget de la carte
+    @author: Maxime Favier
+    """
     def __init__(self, im, parentClass):
+        """
+        Initialisation du widget pour la carte
+        @type im: str
+        @param im: Chemain d'acces de la carte
+        @type parentClass: Window
+        @param parentClass: classe principale de l'UI
+        """
         super().__init__()
         self.parentClass = parentClass
         self.line = []
@@ -39,6 +51,7 @@ class DrawMap(QWidget):
         self.intersect = ()
         self.westDec, self.nordDec = None, None
         self.parentClass.updateLabelsAmer("→", "→")
+        self.parentClass.updateLabelsError("→", "→")
         self.update()
 
     def paintEvent(self, event):
@@ -141,7 +154,6 @@ class DrawMap(QWidget):
 
         self.update()
 
-
     def gpsDialogManager(self):
         """
         Hook pour la fenetre de dialogue GPS
@@ -153,14 +165,13 @@ class DrawMap(QWidget):
         # else:
         #    print("Cancel!")
 
-
     def getGpsCoordinates(self, ncord, wcord):
         """
         Affiche le point GPS sur la carte
-        @type Ncord: tuple
-        @param Ncord: Cordonée sexadecimal Nord
-        @type Wcord: tuple
-        @param Wcord: Cordonée sexadecimal ouest
+        @type ncord: tuple
+        @param ncord: Cordonée sexadecimal Nord
+        @type wcord: tuple
+        @param wcord: Cordonée sexadecimal ouest
         """
         self.parentClass.updateLabelsGPS("{}° {}' {}\"N".format(*ncord),
                                          "{}° {}' {}\"W".format(*wcord))
@@ -174,7 +185,6 @@ class DrawMap(QWidget):
         self.computeAmerGPSError()
         # print(xcoord, ycoord)
 
-
     def computeAmerGPSError(self):
         """
         Calcul l'erreur entre le relevé des amers et la position GPS
@@ -187,7 +197,6 @@ class DrawMap(QWidget):
             self.parentClass.updateLabelsError("{}° {}' {}\"N".format(*ndelta),
                                                "{}° {}' {}\"W".format(*wdelta))
 
-
     def mousePressEvent(self, event):
         """
         Hook evenement clic de souris
@@ -196,3 +205,24 @@ class DrawMap(QWidget):
         """
         if self.mode == "amer":
             self.amerCreation(event)
+
+    def mareeDialogManager(self):
+        """Hook pour la fenetre de dialogue marée"""
+        dlg = MareeDialog(self, self.parentClass)
+        if dlg.exec_():
+            pass
+
+    def mareeProcessing(self, TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time):
+        """Calcule les informations de marée
+        @type  TMarreeHaute: int
+        @param TMarreeHaute: heure de maree haute en min
+        @type  HMarreeHaute: float
+        @param HMarreeHaute: hauteur de l'eau à maree haute
+        @type TMarreeBasse: int
+        @param TMarreeBasse: heure de maree basse en min
+        @type HMarreeBasse: float
+        @param HMarreeBasse: hauteur de l'eau à maree basse en min
+        @type time: int
+        @param time: temps de la journee"""
+        h = marreCalculator(TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time)
+        self.parentClass.updateMarre(None, "H = {} m".format(str(round(h, 3))))
