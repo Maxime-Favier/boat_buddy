@@ -3,16 +3,19 @@
 
 import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QAction, qApp, QMainWindow,QStyle
+from PyQt5.QtWidgets import QApplication, QWidget, QAction, qApp, QMainWindow, QStyle, QDockWidget, QVBoxLayout, \
+    QPushButton, QGroupBox
 from PyQt5.QtGui import QIcon, QStyleHints
 
 from map import *
+
 
 class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.title = "Boat buddy"
-        self.centralWidg = DrawMap("./maps/baie_de_quiberon.png")
+        self.lblAmer1, self.lblAmer2, lblGPS1, lblGPS2 = None, None, None, None
+        self.centralWidg = DrawMap("./maps/baie_de_quiberon.png", self)
         self.init_ui()
 
     def init_ui(self):
@@ -21,6 +24,7 @@ class Window(QMainWindow):
         self.setWindowTitle(self.title)
         self.draw_toolbar()
         self.draw_map()
+        self.draw_dock()
         self.show()
 
     def draw_toolbar(self):
@@ -36,6 +40,7 @@ class Window(QMainWindow):
         delPositionTool.triggered.connect(self.centralWidg.supprimerTraces)
         gpsTool = QAction(QIcon("./icons/satellite.png"), "GPS", self)
         gpsTool.setToolTip("Entrer une position GPS")
+        gpsTool.triggered.connect(self.centralWidg.gpsDialogManager)
 
         mareeTool = QAction(QIcon("./icons/maree.png"), "Maree Option", self)
         mareeTool.setToolTip("Calcul de la marée")
@@ -50,6 +55,88 @@ class Window(QMainWindow):
     def draw_map(self):
         """positionement de la carte"""
         self.setCentralWidget(self.centralWidg)
+
+    def draw_dock(self):
+        """Initialisation du dock"""
+        self.docked = QDockWidget("", self)
+        self.addDockWidget(Qt.RightDockWidgetArea, self.docked)
+        self.dockedWidget = QWidget(self)
+        self.docked.setWidget(self.dockedWidget)
+        self.dockedWidget.setLayout(QVBoxLayout())
+        self.dockedWidget.layout().addWidget(self.groupePosition())
+        self.dockedWidget.layout().addWidget(self.groupeGPS())
+        self.dockedWidget.layout().addWidget(self.groupeAmersError())
+        # for i in range(5):
+        #    self.dockedWidget.layout().addWidget(QPushButton("{}".format(i)))
+
+    def groupePosition(self):
+        """Initialisation des widgets du groupe position du bateau - Amers """
+        groupe = QGroupBox("Position du bateau : Amers")
+        self.lblAmer1 = QLabel("→")
+        self.lblAmer2 = QLabel("→")
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.lblAmer1)
+        vbox.addWidget(self.lblAmer2)
+        vbox.addStretch(0)
+        groupe.setLayout(vbox)
+        return groupe
+
+    def groupeGPS(self):
+        """Initialisation des widgets du groupe GPS"""
+        groupe = QGroupBox("Position GPS")
+        self.lblGPS1 = QLabel("→")
+        self.lblGPS2 = QLabel("→")
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.lblGPS1)
+        vbox.addWidget(self.lblGPS2)
+        vbox.addStretch(0)
+        groupe.setLayout(vbox)
+        return groupe
+
+    def groupeAmersError(self):
+        """Initialisation des widgets du groupe erreur amers"""
+        groupe = QGroupBox("Erreur amers / GPS")
+        self.lblError1 = QLabel("→")
+        self.lblError2 = QLabel("→")
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.lblError1)
+        vbox.addWidget(self.lblError2)
+        vbox.addStretch(0)
+        groupe.setLayout(vbox)
+        return groupe
+
+    def updateLabelsAmer(self, pos1, pos2):
+        """
+        mise à jour des labels du groupe position amer
+        @type pos1: str
+        @param pos1: position en deg, min, sec au nord
+        @type pos2: str
+        @param pos2: position en deg, min, sec a l'ouest
+        """
+        self.lblAmer1.setText(pos1)
+        self.lblAmer2.setText(pos2)
+
+    def updateLabelsGPS(self, pos1, pos2):
+        """
+        mise à jour des labels du groupe position GPS
+        @type pos1: str
+        @param pos1: position en deg, min, sec au nord
+        @type pos2: str
+        @param pos2: position en deg, min, sec a l'ouest
+        """
+        self.lblGPS1.setText(pos1)
+        self.lblGPS2.setText(pos2)
+
+    def updateLabelsError(self, pos1, pos2):
+        """
+        mise à jour des labels du groupe position GPS
+        @type pos1: str
+        @param pos1: position en deg, min, sec au nord
+        @type pos2: str
+        @param pos2: position en deg, min, sec a l'ouest
+        """
+        self.lblError1.setText(pos1)
+        self.lblError2.setText(pos2)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
 
 from math import trunc
 
+
 def WGS84DecToDeg(Ddec):
     """
     Convertis les degrés decimal en degrés sexadecimal
@@ -12,10 +13,10 @@ def WGS84DecToDeg(Ddec):
     @rtype: tuple
     @return: variable WGS84 sexadecimal
     @since: 0.8
-    @version: 0.8
+    @version: 0.9
     @author: Maxime Favier
     """
     D = trunc(Ddec)
     M = trunc(60 * (abs(Ddec - D)))
     S = 3600 * abs(Ddec - D) - 60 * M
-    return D, M, S
+    return D, M, round(S)

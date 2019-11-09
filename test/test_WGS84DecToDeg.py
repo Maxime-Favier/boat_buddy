@@ -5,7 +5,7 @@ import unittest
 from fonctions.WGS84DecToDeg import WGS84DecToDeg
 
 
-class WGS84_Test(unittest.TestCase):
+class WGS84Dec_Test(unittest.TestCase):
     """
     Tests automatiques pour la fonction WGS84DecToDeg qui convertit les degrés WGS84 decimal en sexadécimal
     """
