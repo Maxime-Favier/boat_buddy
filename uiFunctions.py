@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QLabel, QGridLayout, QLin
     QVBoxLayout, QCheckBox
 from PyQt5.QtGui import QDoubleValidator, QIntValidator
 
+
 class GpsDialog(QDialog):
     """
     Interface de dialogue pour le GPS
@@ -130,6 +131,7 @@ class MareeDialog(QDialog):
         self.layout.addWidget(self.basseMerGroupe(), 2, 0)
         self.layout.addWidget(lbl2, 3, 0)
         self.layout.addWidget(self.cHeure, 4, 0)
+        self.layout.addWidget(self.cLendemain, 5, 0)
         self.layout.addWidget(self.buttonBox)
         self.setLayout(self.layout)
 
