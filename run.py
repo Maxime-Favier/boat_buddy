@@ -50,11 +50,16 @@ class Window(QMainWindow):
         mareeTool.setToolTip("Calcul de la marée")
         mareeTool.triggered.connect(self.centralWidg.mareeDialogManager)
 
+        posTheo = QAction(QIcon(""), "Position  Théorique", self)
+        posTheo.setToolTip("Calcul de la position Theorique")
+        posTheo.triggered.connect(self.centralWidg.posTheoriqueDialogManager)
+
         self.toolbar = self.addToolBar('Exit')
         self.toolbar.addAction(positionTool)
         self.toolbar.addAction(delPositionTool)
         self.toolbar.addAction(gpsTool)
         self.toolbar.addAction(mareeTool)
+        self.toolbar.addAction(posTheo)
         self.toolbar.addAction(exitAct)
 
     def draw_map(self):

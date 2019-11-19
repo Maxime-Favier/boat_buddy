@@ -28,4 +28,3 @@ def functionIntersect(a, b, c, d):
     x = (-b + d) / (a - c)
     y = a * x + b
     return x, y
-

@@ -19,6 +19,7 @@ class DrawMap(QWidget):
     widget de la carte
     @author: Maxime Favier
     """
+
     def __init__(self, im, parentClass):
         """
         Initialisation du widget pour la carte
@@ -213,7 +214,7 @@ class DrawMap(QWidget):
             pass
 
     def mareeProcessing(self, TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time):
-        """Calcule les informations de marée
+        """ Manager de calcul des informations de marée
         @type  TMarreeHaute: int
         @param TMarreeHaute: heure de maree haute en min
         @type  HMarreeHaute: float
@@ -226,3 +227,43 @@ class DrawMap(QWidget):
         @param time: temps de la journee"""
         h = marreCalculator(TMarreeHaute, HMarreeHaute, TMarreeBasse, HMarreeBasse, time)
         self.parentClass.updateMarre(None, "H = {} m".format(str(round(h, 3))))
+
+    def posTheoriqueDialogManager(self):
+        """Hook pour la fenetre de dialogue de calcul de la position théorique"""
+        dlg = PositionTheorique(self, self.parentClass)
+        if dlg.exec_():
+            pass
+
+    def posTheoriqueProcessing(self, ncoord, wcoord, angleCourant, vitesseCourant, capCompas, declinaison, deviation,
+                               deriveVent, xMin):
+        """
+        Manager de calcul des information pour la position théorique
+        @type ncoord: tuple
+        @param ncoord: Cordonée sexadecimal Nord
+        @type wcoord: tuple
+        @param wcoord: Cordonée sexadecimal Ouest
+        @param angleCourant: angle du courant
+        @type angleCourant: float
+        @param vitesseCourant: vitesse du courant m/s
+        @type vitesseCourant: float
+        @param capCompas: cap compas (deg)
+        @type capCompas: float
+        @param declinaison: declinaison
+        @type declinaison: float
+        @param deviation: déviation
+        @type deviation: float
+        @param deriveVent: derive du vent
+        @type deriveVent: float
+        @param xMin: min de simulation
+        @type xMin: int
+        @author: Maxime Favier
+        """
+        print("angleCourant=", angleCourant)
+        print("vitesseCourant=", vitesseCourant)
+        print("capCompas=", capCompas)
+        print("declinaison=", declinaison)
+        print("deviation=", deviation)
+        print("deriveVent=", deriveVent)
+        print("xMin=", xMin)
+        print("ncoord=", ncoord)
+        print("wcoord=", wcoord)
