@@ -18,7 +18,7 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
         self.title = "Boat buddy"
-        self.lblAmer1, self.lblAmer2, lblGPS1, lblGPS2 = None, None, None, None
+        self.lblAmer1, self.lblAmer2, self.lblGPS1, self.lblGPS2, self.routeFond = None, None, None, None, None
         self.centralWidg = DrawMap("./maps/baie_de_quiberon.png", self)
         self.init_ui()
 
@@ -37,8 +37,8 @@ class Window(QMainWindow):
         exitAct.setShortcut('Ctrl+Q')
         exitAct.triggered.connect(qApp.quit)
 
-        positionTool = QAction(QIcon("./icons/star.png"), "Position Tool", self)
-        positionTool.setToolTip('Calcule la position')
+        #positionTool = QAction(QIcon("./icons/star.png"), "Position Tool", self)
+        #positionTool.setToolTip('Calcule la position')
         delPositionTool = QAction(QIcon("./icons/delStar.png"), "Position Tool", self)
         delPositionTool.setToolTip('Supprime le tracé des amer')
         delPositionTool.triggered.connect(self.centralWidg.supprimerTraces)
@@ -50,16 +50,22 @@ class Window(QMainWindow):
         mareeTool.setToolTip("Calcul de la marée")
         mareeTool.triggered.connect(self.centralWidg.mareeDialogManager)
 
-        posTheo = QAction(QIcon(""), "Position  Théorique", self)
+        posTheo = QAction(QIcon("./icons/simulation"), "Position  Théorique", self)
         posTheo.setToolTip("Calcul de la position Theorique")
         posTheo.triggered.connect(self.centralWidg.posTheoriqueDialogManager)
 
+        capCompas = QAction(QIcon("./icons/cap_compas.png"), "Cap Compas", self)
+        capCompas.setToolTip("Calcul du Cap compas")
+        capCompas.triggered.connect(self.centralWidg.capTheoriqueManager)
+
+
         self.toolbar = self.addToolBar('Exit')
-        self.toolbar.addAction(positionTool)
+        #self.toolbar.addAction(positionTool)
         self.toolbar.addAction(delPositionTool)
         self.toolbar.addAction(gpsTool)
         self.toolbar.addAction(mareeTool)
         self.toolbar.addAction(posTheo)
+        self.toolbar.addAction(capCompas)
         self.toolbar.addAction(exitAct)
 
     def draw_map(self):
@@ -77,6 +83,7 @@ class Window(QMainWindow):
         self.dockedWidget.layout().addWidget(self.groupeGPS())
         self.dockedWidget.layout().addWidget(self.groupeAmersError())
         self.dockedWidget.layout().addWidget(self.groupeMaree())
+        self.dockedWidget.layout().addWidget(self.groupeCap())
 
     def groupePosition(self):
         """Initialisation des widgets du groupe position du bateau - Amers """
@@ -126,6 +133,18 @@ class Window(QMainWindow):
         groupe.setLayout(vbox)
         return groupe
 
+    def groupeCap(self):
+        """Initialisation des widgets du groupe Cap"""
+        groupe = QGroupBox("Cap")
+        lbl1 = QLabel("Route de fond:")
+        self.routeFond = QLabel("→")
+        vbox = QVBoxLayout()
+        vbox.addWidget(lbl1)
+        vbox.addWidget(self.routeFond)
+        vbox.addStretch(0)
+        groupe.setLayout(vbox)
+        return groupe
+
     def updateLabelsAmer(self, pos1, pos2):
         """
         mise à jour des labels du groupe position amer
@@ -171,6 +190,14 @@ class Window(QMainWindow):
             self.lblMaree1.setText(lbl1)
         if lbl2:
             self.lblMaree2.setText(lbl2)
+
+    def updateCap(self, cap):
+        """
+        mise à jour des labels du groupe cap
+        @param cap: contenu du lbl
+        @type cap: str
+        """
+        self.routeFond.setText(cap)
 
 
 if __name__ == '__main__':

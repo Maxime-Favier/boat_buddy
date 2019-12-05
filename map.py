@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect, QSize, QLineF, QPointF
 from PyQt5.QtWidgets import QWidget, QLabel, QInputDialog, QMessageBox
-from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap, QMouseEvent, QPaintEvent
+from PyQt5.QtGui import QPainter, QBrush, QColor, QPen, QPixmap, QMouseEvent, QPaintEvent, QPolygonF
 from PIL import Image
+from math import acos, sin, cos, pi, degrees
 
 from fonctions.angleToFunction import angleToFunction
 from fonctions.functionIntersect import functionIntersect
@@ -34,6 +35,7 @@ class DrawMap(QWidget):
         self.fx = []
         self.intersect = ()
         self.gps = ()
+        self.arrow = []
         self.ndDec, self.wdDec, self.westDec, self.nordDec = None, None, None, None
         self.im = im
         self.mode = "amer"
@@ -78,6 +80,10 @@ class DrawMap(QWidget):
             pen.setColor(Qt.red)
             painter.setPen(pen)
             painter.drawEllipse(self.gps[0] - 5, self.gps[1] - 5, 10, 10)
+        if self.arrow:
+            pen.setColor(Qt.darkGray)
+            painter.setPen(pen)
+            Arrow(painter, self.arrow[0], self.arrow[1])
         return
 
     def amerCreation(self, event):
@@ -267,3 +273,78 @@ class DrawMap(QWidget):
         print("xMin=", xMin)
         print("ncoord=", ncoord)
         print("wcoord=", wcoord)
+        QMessageBox.warning(self, "Non implémenté", "Cette fonction n'est pas encore disponible")
+
+    def capTheoriqueManager(self):
+        """Hook pour la fenetre de dialogue pour le calcul du cap"""
+        dlg = CapDialog(self)
+        if dlg.exec_():
+            pass
+
+    def capTheoriqueProcessing(self, ncoord1, wcoord1, ncoord2, wcoord2):
+        """
+        Manager du calcul de cap
+        @type ncoord1: tuple
+        @param ncoord1: coordonnées deg/min/sec nord du pt A
+        @type wcoord1: tuple
+        @param wcoord1: coordonnées deg/min/sec ouest du pt A
+        @type ncoord2: tuple
+        @param ncoord2: coordonnées deg/min/sec nord du pt B
+        @type wcoord2: tuple
+        @param wcoord2: coordonnées deg/min/sec ouest du pt B
+        @author: Maxime Favier
+        """
+        # conversion en degré decimal
+        decNcoord1 = WGS84DegToDec(*ncoord1)
+        decWcoord1 = WGS84DegToDec(*wcoord1)
+        decNcoord2 = WGS84DegToDec(*ncoord2)
+        decWcoord2 = WGS84DegToDec(*wcoord2)
+        # conversion en pixel sur la carte
+        # point A :
+        xcoordA = abs((decWcoord1 - 3.0) / 0.000342936)
+        ycoordA = abs((decNcoord1 - 47.519635) / -0.000232025)
+        # print("pt A:", xcoordA, ycoordA)
+        # point B :
+        xcoordB = abs((decWcoord2 - 3.0) / 0.000342936)
+        ycoordB = abs((decNcoord2 - 47.519635) / -0.000232025)
+        # print("pt B:", xcoordB, ycoordB)
+        # création de la flèche
+        self.arrow.extend([(xcoordA, ycoordA), (xcoordB, ycoordB)])
+        # maj de l'interface
+        self.update()
+
+
+class Arrow:
+    """
+    Classe pour la création de fleches
+    @author: Maxime Favier
+    @note: Inspiré de https://gist.github.com/reusee/2406975
+    """
+
+    def __init__(self, painter, pos1, pos2):
+        self.arrowSize = 10.0
+        self.sourcePoint = QPointF(*pos1)
+        self.destPoint = QPointF(*pos2)
+
+        self.paint(painter)
+
+    def paint(self, painter):
+        line = QLineF(self.sourcePoint, self.destPoint)
+
+        if line.length() == 0.0:
+            return
+
+        painter.setPen(QPen(Qt.darkGray, 2, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+        painter.drawLine(line)
+
+        angle = acos(line.dx() / line.length())
+        if line.dy() >= 0:
+            angle = (2 * pi) - angle
+
+        destArrowP1 = self.destPoint + QPointF(sin(angle - pi / 3) * self.arrowSize,
+                                               cos(angle - pi / 3) * self.arrowSize)
+        destArrowP2 = self.destPoint + QPointF(sin(angle - pi + pi / 3) * self.arrowSize,
+                                               cos(angle - pi + pi / 3) * self.arrowSize)
+
+        painter.setBrush(Qt.darkGray)
+        painter.drawPolygon(QPolygonF([line.p2(), destArrowP1, destArrowP2]))
