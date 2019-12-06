@@ -19,6 +19,7 @@ class Window(QMainWindow):
         super().__init__()
         self.title = "Boat buddy"
         self.lblAmer1, self.lblAmer2, self.lblGPS1, self.lblGPS2, self.routeFond = None, None, None, None, None
+        self.lblMaree1, self.lblMaree2, self.lblError1, self.lblError2 = None, None, None, None
         self.centralWidg = DrawMap("./maps/baie_de_quiberon.png", self)
         self.init_ui()
 

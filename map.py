@@ -119,7 +119,7 @@ class DrawMap(QWidget):
                 a, b = angleToFunction(deg, (pos.x(), pos.y()))
                 # print("ab", a, b)
                 # test des cas pour la direction
-                if deg < 180:
+                if deg >= 180:
                     y2 = -a * 1650 + b
                     x2 = 1650
                 else:
