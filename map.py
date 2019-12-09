@@ -12,6 +12,7 @@ from fonctions.functionIntersect import functionIntersect
 from fonctions.WGS84DecToDeg import WGS84DecToDeg
 from fonctions.WGS84DegToDec import WGS84DegToDec
 from fonctions.mareeCalculator import marreCalculator
+from fonctions.routeFond import route_fond
 from uiFunctions import *
 
 
@@ -308,8 +309,10 @@ class DrawMap(QWidget):
         xcoordB = abs((decWcoord2 - 3.0) / 0.000342936)
         ycoordB = abs((decNcoord2 - 47.519635) / -0.000232025)
         # print("pt B:", xcoordB, ycoordB)
+        rf = route_fond(xcoordA, ycoordA, xcoordB, ycoordB)
+        self.parentClass.updateCap(str(rf)+" °")
         # création de la flèche
-        self.arrow.extend([(xcoordA, ycoordA), (xcoordB, ycoordB)])
+        self.arrow = [(xcoordA, ycoordA), (xcoordB, ycoordB)]
         # maj de l'interface
         self.update()
 
