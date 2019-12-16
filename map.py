@@ -12,7 +12,7 @@ from fonctions.functionIntersect import functionIntersect
 from fonctions.WGS84DecToDeg import WGS84DecToDeg
 from fonctions.WGS84DegToDec import WGS84DegToDec
 from fonctions.mareeCalculator import marreCalculator
-from fonctions.routeFond import route_fond
+from fonctions.routeFond import *
 from uiFunctions import *
 
 
@@ -282,7 +282,7 @@ class DrawMap(QWidget):
         if dlg.exec_():
             pass
 
-    def capTheoriqueProcessing(self, ncoord1, wcoord1, ncoord2, wcoord2):
+    def capTheoriqueProcessing(self, ncoord1, wcoord1, ncoord2, wcoord2, d,D ,Der):
         """
         Manager du calcul de cap
         @type ncoord1: tuple
@@ -309,8 +309,12 @@ class DrawMap(QWidget):
         xcoordB = abs((decWcoord2 - 3.0) / 0.000342936)
         ycoordB = abs((decNcoord2 - 47.519635) / -0.000232025)
         # print("pt B:", xcoordB, ycoordB)
-        rf = route_fond(xcoordA, ycoordA, xcoordB, ycoordB)
-        self.parentClass.updateCap(str(rf)+" °")
+        # calcul cap compas
+        Cc = route_compas(xcoordA, ycoordA, xcoordB, ycoordB)
+        # convertion
+        Rs = route_surface(Cc, d, D, Der)
+        #cap_compas(Rs,Der,D,d)
+        self.parentClass.updateCap(str(Cc)+" °", str(Rs)+" °")
         # création de la flèche
         self.arrow = [(xcoordA, ycoordA), (xcoordB, ycoordB)]
         # maj de l'interface

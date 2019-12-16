@@ -20,6 +20,7 @@ class Window(QMainWindow):
         self.title = "Boat buddy"
         self.lblAmer1, self.lblAmer2, self.lblGPS1, self.lblGPS2, self.routeFond = None, None, None, None, None
         self.lblMaree1, self.lblMaree2, self.lblError1, self.lblError2 = None, None, None, None
+        self.capCompas, self.routeSurface = None, None
         self.centralWidg = DrawMap("./maps/baie_de_quiberon.png", self)
         self.init_ui()
 
@@ -137,11 +138,19 @@ class Window(QMainWindow):
     def groupeCap(self):
         """Initialisation des widgets du groupe Cap"""
         groupe = QGroupBox("Cap")
-        lbl1 = QLabel("Route de fond:")
+        lbl1 = QLabel("Cap compas:")
+        self.capCompas = QLabel("→")
+        lbl2 = QLabel("Route de fond:")
         self.routeFond = QLabel("→")
+        lbl3 = QLabel("Route de surface")
+        self.routeSurface = QLabel("→")
         vbox = QVBoxLayout()
         vbox.addWidget(lbl1)
+        vbox.addWidget(self.capCompas)
+        vbox.addWidget(lbl2)
         vbox.addWidget(self.routeFond)
+        vbox.addWidget(lbl3)
+        vbox.addWidget(self.routeSurface)
         vbox.addStretch(0)
         groupe.setLayout(vbox)
         return groupe
@@ -192,13 +201,15 @@ class Window(QMainWindow):
         if lbl2:
             self.lblMaree2.setText(lbl2)
 
-    def updateCap(self, cap):
+    def updateCap(self,  capCompas="", routeSurface="", routeFond="Non Implémenté"):
         """
         mise à jour des labels du groupe cap
         @param cap: contenu du lbl
         @type cap: str
         """
-        self.routeFond.setText(cap)
+        self.capCompas.setText(capCompas)
+        self.routeFond.setText(routeFond)
+        self.routeSurface.setText(routeSurface)
 
 
 if __name__ == '__main__':

@@ -344,7 +344,8 @@ class PositionTheorique(QDialog):
             xMin = int(self.xMin.text())
             # print(angleCourant, vitesseCourant, capCompas, declinaison, deviation, deriveVent, xMin)
             # print(ncoord, wcoord)
-            self.map.posTheoriqueProcessing(ncoord, wcoord, angleCourant, vitesseCourant, capCompas, declinaison, deviation,
+            self.map.posTheoriqueProcessing(ncoord, wcoord, angleCourant, vitesseCourant, capCompas, declinaison,
+                                            deviation,
                                             deriveVent, xMin)
             self.accept()
         except Exception:
@@ -434,6 +435,17 @@ class CapDialog(QDialog):
         seclbl22 = QLabel('"')
         wlbl2 = QLabel("W")
 
+        # d,D ,Der
+        lbld = QLabel("déviation")
+        self.d = QLineEdit()
+        self.d.setValidator(QDoubleValidator())
+        lblD = QLabel("déclinaison")
+        self.D = QLineEdit()
+        self.D.setValidator(QDoubleValidator())
+        lblDer = QLabel("dérive du au vent")
+        self.Der = QLineEdit()
+        self.Der.setValidator(QDoubleValidator())
+
         QBtn = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
 
         self.buttonBox = QDialogButtonBox(QBtn)
@@ -475,7 +487,14 @@ class CapDialog(QDialog):
         self.layout.addWidget(self.wSec2, 8, 4)
         self.layout.addWidget(seclbl22, 8, 5)
         self.layout.addWidget(wlbl2, 8, 6)
-        self.layout.addWidget(self.buttonBox, 9, 0)
+
+        self.layout.addWidget(lbld, 10, 0)
+        self.layout.addWidget(self.d, 10, 1, 1, 5)
+        self.layout.addWidget(lblD, 11, 0)
+        self.layout.addWidget(self.D, 11, 1, 1, 5)
+        self.layout.addWidget(lblDer, 12, 0)
+        self.layout.addWidget(self.Der, 12, 1, 1, 5)
+        self.layout.addWidget(self.buttonBox, 13, 0)
         self.setLayout(self.layout)
 
     def ok(self):
@@ -485,9 +504,12 @@ class CapDialog(QDialog):
             wcoord1 = int(self.wDeg1.text()), int(self.wMin1.text()), float(self.wSec1.text().replace(",", "."))
             ncoord2 = int(self.nDeg2.text()), int(self.nMin2.text()), float(self.nSec2.text().replace(",", "."))
             wcoord2 = int(self.wDeg2.text()), int(self.wMin2.text()), float(self.wSec2.text().replace(",", "."))
-            #print(ncoord1, wcoord1)
-            #print(ncoord2, wcoord2)
-            self.map.capTheoriqueProcessing(ncoord1, wcoord1, ncoord2, wcoord2)
+            d = float(self.d.text())
+            D = float(self.D.text())
+            Der = float(self.Der.text())
+            # print(ncoord1, wcoord1)
+            # print(ncoord2, wcoord2)
+            self.map.capTheoriqueProcessing(ncoord1, wcoord1, ncoord2, wcoord2, d, D, Der)
 
             self.accept()
         except Exception:
