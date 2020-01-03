@@ -204,8 +204,12 @@ class Window(QMainWindow):
     def updateCap(self,  capCompas="", routeSurface="", routeFond="Non Implémenté"):
         """
         mise à jour des labels du groupe cap
-        @param cap: contenu du lbl
-        @type cap: str
+        @param capCompas: contenu du label
+        @type capCompas: str
+        @param routeSurface: label route de surface
+        @type routeSurface: str
+        @param routeFond: label route de fond
+        @type routeFond: str
         """
         self.capCompas.setText(capCompas)
         self.routeFond.setText(routeFond)

@@ -293,6 +293,12 @@ class DrawMap(QWidget):
         @param ncoord2: coordonnées deg/min/sec nord du pt B
         @type wcoord2: tuple
         @param wcoord2: coordonnées deg/min/sec ouest du pt B
+        @type d: float
+        @param d: déviation
+        @type D: float
+        @param D: déclinaison
+        @type Der: float
+        @param Der: dérive au vent
         @author: Maxime Favier
         """
         # conversion en degré decimal
@@ -311,9 +317,8 @@ class DrawMap(QWidget):
         # print("pt B:", xcoordB, ycoordB)
         # calcul cap compas
         Cc = route_compas(xcoordA, ycoordA, xcoordB, ycoordB)
-        # convertion
+        # convertion Route de surface
         Rs = route_surface(Cc, d, D, Der)
-        #cap_compas(Rs,Der,D,d)
         self.parentClass.updateCap(str(Cc)+" °", str(Rs)+" °")
         # création de la flèche
         self.arrow = [(xcoordA, ycoordA), (xcoordB, ycoordB)]
