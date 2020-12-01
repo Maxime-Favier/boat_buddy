@@ -96,8 +96,8 @@ class DrawMap(QWidget):
         pos = event.pos()
         # fenetre demande angle de l'amer
         deg, ok = QInputDialog.getDouble(self, "Angle de l'amer", "Angle de l'amer")
-        deg = deg + 180
-        deg = deg % 360
+        #deg = deg + 180
+        #deg = deg % 360
         # si click ok
         if ok:
             # si angle valide
